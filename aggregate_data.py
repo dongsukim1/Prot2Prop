@@ -111,10 +111,10 @@ LABEL_COL_CANDIDATES = (
   "value",
 )
 
-def _loadcsv_dataset(path: Path, fold_col: str = "split",) -> Dict[str, object]:
+def _loadcsv_dataset(path: Path, split_col: str = "split",) -> Dict[str, object]:
 
     # Load all csvs 
-    # Assumes that the data has already been split into train/val/test folds
+    # Assumes that the data has already been split into train/val/test
     # Creates a CSVSdataset wrapper to provide column names and iterable rows
     # Returns train/val/tet spilt as a dict
 
@@ -123,9 +123,9 @@ def _loadcsv_dataset(path: Path, fold_col: str = "split",) -> Dict[str, object]:
       raise ValueError(f"No CSV files found in {path}")
     df = pd.concat(dfs, ignore_index=True)
 
-    train_df = df[df[fold_col] == "train"].reset_index(drop=True)
-    val_df = df[df[fold_col] == "validation"].reset_index(drop=True)
-    test_df = df[df[fold_col] == "test"].reset_index(drop=True)
+    train_df = df[df[split_col] == "train"].reset_index(drop=True)
+    val_df = df[df[split_col] == "validation"].reset_index(drop=True)
+    test_df = df[df[split_col] == "test"].reset_index(drop=True)
 
     ds_dict = {
         "train": CSVDataset(train_df),
