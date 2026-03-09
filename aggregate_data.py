@@ -21,6 +21,10 @@ from datasets import load_dataset
 @dataclass(frozen=True)
 class TaskSpec:
   # Dataset configuration for one property task.
+  # `task_name` should identify the property we want to predict
+  # (for example: enzyme_activity, thermostability, solubility).
+  # Prefer names that map directly to a biochemical property; use
+  # non-property task names only when there is a clear exception.
   # `dtype` drives label coercion (all labels are stored as float in `samples`).
   # `head_type`, `num_classes`, and `loss` are training metadata for downstream loaders.
   task_name: str
