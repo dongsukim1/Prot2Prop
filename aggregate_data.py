@@ -20,13 +20,33 @@ from datasets import load_dataset
 
 @dataclass(frozen=True)
 class TaskSpec:
-  # Dataset configuration for one property task.
-  # `task_name` should identify the property we want to predict
-  # (for example: enzyme_activity, thermostability, solubility).
-  # Prefer names that map directly to a biochemical property; use
-  # non-property task names only when there is a clear exception.
-  # `dtype` drives label coercion (all labels are stored as float in `samples`).
-  # `head_type`, `num_classes`, and `loss` are training metadata for downstream loaders.
+  """Dataset configuration for one prediction task.
+
+  Args:
+    task_name: Name of the prediction target. This should usually map directly
+      to the biochemical property being predicted (for example
+      `enzyme_activity`, `thermostability`, or `solubility`). Use non-property
+      names only when there is a clear exception.
+    dataset: Dataset identifier passed to `datasets.load_dataset`, or a marker
+      name used by custom loaders (for example `ProteinGym` for local CSV
+      loading in this script).
+    dtype: Label type for coercion and downstream interpretation. Supported
+      values in this script are `bool`, `int`, and `float`.
+    head_type: Model-head family expected by downstream training code (for
+      example `sequence_binary` or `sequence_regression`).
+    num_classes: Number of target classes for classification tasks. Set to
+      `None` for regression tasks.
+    loss: Preferred loss name for downstream training metadata (for example
+      `bce` or `mse`).
+    splits: Split names to read, in priority order. Defaults to
+      `("train", "validation", "test")`.
+    sequence_col: Optional explicit sequence column name. If `None`, the script
+      infers from known sequence column candidates.
+    label_col: Optional explicit label column name. If `None`, the script
+      infers from known label column candidates.
+    subset: Optional dataset subset/config name passed as the second argument
+      to `datasets.load_dataset`.
+  """
   task_name: str
   dataset: str
   dtype: str
